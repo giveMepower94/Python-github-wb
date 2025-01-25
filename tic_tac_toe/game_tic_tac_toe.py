@@ -21,8 +21,8 @@ pygame.display.set_caption('Крестики-нолики')
 # Инициализация игрового поля
 board = [['' for _ in range(3)] for _ in range(3)]
 
-# Функция для рисования сетки, рисуем вертикальную и горизонтальную линию
 
+# Функция для рисования сетки, рисуем вертикальную и горизонтальную линию
 def draw_grid():
    screen.fill(WHITE)
    for i in range(1, 3):
@@ -31,3 +31,14 @@ def draw_grid():
 
 
 # Функция для рисования крестиков и ноликов
+def draw_xo():
+    for row in range(3):
+        for col in range(3):
+            if board[row][col] == 'X':
+                pygame.draw.line(screen, RED, (col * CELL_SIZE + 20, row * CELL_SIZE + 20),
+                        ((col + 1) * CELL_SIZE - 20, (row + 1) * CELL_SIZE - 20), LINE_WIDTH)
+                pygame.draw.line(screen, RED, ((col + 1) * CELL_SIZE - 20, row * CELL_SIZE + 20),
+                                 (col * CELL_SIZE + 20, (row + 1) * CELL_SIZE - 20), LINE_WIDTH)
+            elif board[row][col] == 'O':
+                pygame.draw.circle(screen, RED, (col * CELL_SIZE + CELL_SIZE // 2, row * CELL_SIZE + CELL_SIZE // 2),
+                                   CELL_SIZE // 2 - 20, LINE_WIDTH)
