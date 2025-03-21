@@ -35,8 +35,21 @@ def ask_move(player, board):
             )
             x, y = int(x), int(y)
             if (0 <= x < len(board)) and (0 <= y < len(board)) and (board[x][y] == " "):
-                return (x, y)
+                return x, y
             else:
                 print(f"Клетка {x} {y} занята или вне диапазона. Попробуйте еще раз.")
         except ValueError:
             print("Некорректный ввод. Введите два числа, разделенные пробелом.")
+
+# Создайте функцию, которая делает ход
+
+
+def make_move(player, board, x, y):
+    board[x][y] = player
+
+# Создайте функцию, которая объединяет запрос хода и сам ход
+
+
+def ask_and_make_move(player, board):
+    x, y = ask_move(player, board)
+    make_move(player, board, x, y)
