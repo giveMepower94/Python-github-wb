@@ -23,3 +23,20 @@ def draw_board(board):
                 else:
                     print(Fore.BLUE + "O" + Style.RESET_ALL, "| ")
         print("---------")
+
+# Создайте функцию, которая запрашивает ход
+
+
+def ask_move(player, board):
+    while True:
+        try:
+            x, y = (
+                input(f"{player}, Введите x и y координаты (пример 0 0): ").strip().split()
+            )
+            x, y = int(x), int(y)
+            if (0 <= x < len(board)) and (0 <= y < len(board)) and (board[x][y] == " "):
+                return (x, y)
+            else:
+                print(f"Клетка {x} {y} занята или вне диапазона. Попробуйте еще раз.")
+        except ValueError:
+            print("Некорректный ввод. Введите два числа, разделенные пробелом.")
