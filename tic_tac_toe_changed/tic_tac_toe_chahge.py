@@ -53,3 +53,24 @@ def make_move(player, board, x, y):
 def ask_and_make_move(player, board):
     x, y = ask_move(player, board)
     make_move(player, board, x, y)
+
+
+# Создайте функцию, которая проверяет, не был ли код выигрышным
+
+
+def check_win(player, board):
+    # Проверьте, совпадают ли значения в строках и столбцах
+    for i in range(len(board)):
+        # Проверьте, совпадают ли значения в строках
+        if board[i] == [player, player, player]:
+            return True
+        # Проверьте, совпадают ли значения в столбцах
+        if board[0][i] == player and board[1][i] == player and board[2][i] == player:
+            return True
+    # Проверьте, совпадают ли значения на диагонали из верхнего левого в нижний правый угол
+    if board[0][0] == player and board[1][1] == player and board[2][2] == player:
+        return True
+    # Проверьте, совпадают ли значения на диагонали из верхнего правого в нижний левый угол
+    if board[0][2] == player and board[1][1] == player and board[2][0] == player:
+        return True
+    return False
