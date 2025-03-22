@@ -10,3 +10,5 @@
 - Square: P = 4a
 
 ## Welcome by Kulagin
+
+## Создаем приложение для заметок
