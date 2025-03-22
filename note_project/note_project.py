@@ -1,3 +1,4 @@
+import os
 # Напишите функцию, которая создает заметку
 
 def build_note(note_text, note_name):
@@ -13,3 +14,19 @@ def crete_note():
     note_text = input("Введите текст заметки: ")
 
     build_note(note_text, note_name)
+
+
+# Напишите функцию, которая выводит заметку по запросу пользователя
+
+def read_note():
+    try:
+        note_name = input("Введите название заметки: ")
+        if os.path.isfile(note_name):
+            print("Файл существует")
+            with open(f"{note_name}.txt", "r", encoding="utf-8") as file:
+                file.read()
+        else:
+            print("Заметка не найдена")
+    except Exception as e:
+        print(f"Произошла ошибка: {e}")
+
