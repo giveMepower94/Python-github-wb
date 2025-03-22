@@ -74,3 +74,45 @@ def check_win(player, board):
     if board[0][2] == player and board[1][1] == player and board[2][0] == player:
         return True
     return False
+
+
+# Создайте общую функцию, которая управляет игрой
+
+
+def start_game(board):
+    # Запустите бесконечный цикл игры
+    while True:
+        # Создайте поле с заданным размером
+        board = [[" " for i in range(board)] for j in range(board)]
+        player = "X"
+
+        # Запустите бесконечный цикл раунда
+        while True:
+            # Нарисуйте игровое поле
+            draw_board(board)
+
+            # Запросите ход
+            ask_and_make_move(player, board)
+
+            # Проверьте выигрыш
+            if check_win(player, board):
+                print(f"{player} выиграл!")
+                break
+
+            # Проверьте ничью
+            if all(cell != " " for row in board for cell in row):
+                print("Ничья!")
+                break
+
+            # Передайте ход другому игроку
+            player = "0" if player == "X" else "X"
+
+        # Предложите сыграть еще раз, когда игра закончилась
+        restart = input("Хотите сыграть еще раз? (y/n)")
+        if restart.lower() != "y":
+            break
+
+start_game(3)
+
+# Удачной игры
+
