@@ -1,14 +1,23 @@
 import os
+import re
+import os.path
 # Напишите функцию, которая создает заметку
 
 
 def build_note(note_text, note_name):
+    # Проверьте, существует ли файл, название которого указывает пользователь.
+    # Если нет, создайте новый файл. Если да, замените существующий файл на новый.
     try:
-        with open(f"{note_name}.txt", "w", encoding="utf-8") as file:
-            file.write(note_text)
-            print(f"Заметка с названием {note_name} создана!")
-    except Exception as e:
-        print(f"Произошла ошибка: {e}")
+        try:
+            file = open(f"{note_name}.txt", "r+", encoding="utf-8")
+            print("Такой файл существует")
+        except IOError:
+            file = open(f"{note_name}.txt", "w+", encoding="utf-8")
+            print("Файл создан")
+        file.write(note_text)
+        print(f"Заметка {note_name} создана.")
+    except:
+        print("Что-то пошло не так. Попробуйте еще раз.")
 
 
 # Напишите функцию, которая запрашивает название и текст заметки у пользователя, после чего создает заметку
@@ -16,11 +25,18 @@ def build_note(note_text, note_name):
 def create_note():
     try:
         note_name = input("Введите название заметки: ")
-        note_text = input("Введите текст заметки: ")
-
-        build_note(note_text, note_name)
-    except Exception as e:
-        print(f"Произошла ошибка: {e}")
+        forbidden_symbols = "\\|/*<>?:"
+        pattern = "[{0}]".format(forbidden_symbols)
+        if re.search(pattern, note_name):
+            print(
+                "Вы ввели недопустимые символы в названии файла. Переименуйте заметку."
+            )
+        else:
+            print("Название заметки создано.")
+            note_text = input("Введите текст заметки: ")
+            build_note(note_text, note_name)
+    except:
+        print("Что-то пошло не так. Попробуйте еще раз.")
 
 
 # Напишите функцию, которая выводит заметку по запросу пользователя
@@ -28,7 +44,8 @@ def create_note():
 def read_note():
     try:
         note_name = input("Введите название заметки: ")
-        if os.path.isfile(note_name):
+        path = f"{note_name}.txt"
+        if os.path.isfile(path):
             print("Файл существует")
             with open(f"{note_name}.txt", "r", encoding="utf-8") as file:
                 file.read()
@@ -43,15 +60,13 @@ def read_note():
 def edit_note():
     try:
         note_name = input("Введите название заметки: ")
-        if os.path.isfile(note_name):
+        path = f"{note_name}.txt"
+        if os.path.isfile(path):
             print("Файл существует")
-            with open(f"{note_name}.txt", "r", encoding="utf-8") as file:
-                file.read()
-
+            note_text_new = open(f"{note_name}.txt", "w+", encoding="utf-8")
             new_content = input("Введите новый текст заметки: ")
-            with open(f"{note_name}.txt", "w", encoding="utf-8") as file:
-                file.write(new_content)
-                print("Заметка успешно обновлена.")
+            note_text_new.write(new_content)
+            print("Заметка успешно обновлена.")
         else:
             print("Заметка не найдена.")
     except Exception as e:
@@ -63,8 +78,9 @@ def edit_note():
 def delete_note():
     try:
         note_name = input("Введите название заметки: ")
-        if os.path.isfile(note_name):
-            os.remove(note_name)
+        path = f"{note_name}.txt"
+        if os.path.isfile(path):
+            os.remove(f"{note_name}.txt")
             print("Заметка успешно удалена.")
         else:
             print("Заметка не найдена.")
@@ -104,16 +120,32 @@ def main():
         print('5. Демонстрация заметок в упорядоченном виде')
 
         choice = input('Выберите действие (1/2/3/4/5): ')
+        allowed_symbols = '123456n'
+        pattern_1 = "[{0}]".format(allowed_symbols)
+        if re.search(pattern_1, choice):
+            print("Вы ввели корректный запрос. Действие сейчас выполнится.")
 
-        if choice == 1:
-            create_note()
-        elif choice == 2:
-            read_note()
-        elif choice == 3:
-            edit_note()
-        elif choice == 4:
-            delete_note()
-        elif choice == 5:
-            display_notes()
+            if choice == '1':
+                create_note()
+            if choice == '2':
+                read_note()
+            if choice == '3':
+                edit_note()
+            if choice == '4':
+                delete_note()
+            if choice == '5':
+                display_notes()
+            if choice == 'n':
+                break
         else:
             print("Некорректный выбор. Пожалуйста, выберите действие из меню.")
+
+        # Предложите пользователю продолжить работу с приложением
+        print("Чтобы продолжить работать с заметками, нажмите y/n")
+        answer = input()
+        if answer != "y":
+            break
+
+
+main()
+
